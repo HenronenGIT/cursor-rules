@@ -1,0 +1,117 @@
+# Deep Module Design Guide (Concise)
+
+## Core Principle
+
+> A deep module hides significant complexity behind a small, simple interface.
+
+**Goal:**  
+Small interface. Large internal capability. Low cognitive load.
+
+---
+
+## 1. When Creating a Module
+
+Before creating one, ask:
+
+- What complexity am I hiding?
+- Does this reduce cognitive load?
+- If removed, would callers become more complex?
+
+If not, don’t create it.
+
+---
+
+## 2. Interface Rules
+
+### Keep It Small
+- Few public methods
+- Minimal required arguments
+- No leaked internal structures
+- Avoid boolean flags that change behavior
+
+Bad:
+```ts
+process(data, validate, retry, log)
+```
+
+3. Hide Complexity Inside
+
+A deep module should internally handle:
+
+Validation
+
+Error handling
+
+Logging
+
+Retries
+
+Orchestration
+
+Defaults & policies
+
+Callers should not coordinate steps.
+
+4. Avoid Shallow Patterns
+
+Do NOT create:
+
+One-method classes
+
+Pass-through services
+
+Thin wrappers
+
+Layers that only rename functions
+
+Modules that add indirection but no simplification
+
+If it only forwards calls → delete it.
+
+5. Depth Test
+
+Depth = Hidden Complexity / Interface Complexity
+
+Maximize:
+
+Internal logic
+
+Encapsulated workflow
+
+Minimize:
+
+Public surface area
+
+Required configuration
+
+Required call sequencing
+
+6. Cognitive Load Test
+
+Ask:
+
+How much does the caller need to understand to use this correctly?
+
+If usage requires:
+
+Knowing internal order
+
+Coordinating multiple modules
+
+Setting many flags
+
+It’s shallow.
+
+7. Definition of Done
+
+A module is deep when:
+
+It meaningfully simplifies its callers
+
+It hides non-trivial logic
+
+It exposes a minimal interface
+
+Removing it would increase system complexity
+
+This is the standard your architecture should follow.
